@@ -10,13 +10,17 @@ import { GetListasHistoricosMalotesDto } from './dto/get-listas-historicos-malot
 import { GetMalotesLojaDto } from './dto/get-malotes-loja-dto';
 import { GetPendenciasMalotesDto } from './dto/get-pendencias-malotes-dto';
 import { UpdateMaloteDto } from './dto/update-malote-dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MalotesService {
     private readonly logger = new Logger(MalotesService.name);
     private readonly baseUrl = process.env.API_URL;
 
-    constructor(private readonly httpService: HttpService) { }
+    constructor(
+        private readonly httpService: HttpService,
+        private readonly configService: ConfigService,
+    ) { }
 
     async getListasHistoricosMalotes(query: GetListasHistoricosMalotesDto) {
         const {
@@ -32,6 +36,7 @@ export class MalotesService {
         } = query;
 
         try {
+            
             const response = await firstValueFrom(
                 this.httpService.get(`${this.baseUrl}/api/financeiro/historicos-malotes.xsjs`, {
                     params: {
