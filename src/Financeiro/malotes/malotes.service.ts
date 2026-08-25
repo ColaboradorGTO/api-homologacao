@@ -27,6 +27,7 @@ export class MalotesService {
 
         return url;
     }
+    
 
     async getListasHistoricosMalotes(
         query: GetListasHistoricosMalotesDto,
