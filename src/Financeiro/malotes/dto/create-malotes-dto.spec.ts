@@ -54,9 +54,7 @@ describe('CreateMalotesDto', () => {
 
     const errors = await validate(dto);
 
-    expect(errors.some((e) => e.property === 'DATAMOVIMENTOCAIXA')).toBe(
-      true,
-    );
+    expect(errors.some((e) => e.property === 'DATAMOVIMENTOCAIXA')).toBe(true);
   });
 
   it('rejects a non-numeric VRDINHEIRO', async () => {

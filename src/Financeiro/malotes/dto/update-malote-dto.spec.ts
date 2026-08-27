@@ -44,9 +44,9 @@ describe('UpdateMaloteDto', () => {
 
     const errors = await validate(dto);
 
-    expect(
-      errors.some((e) => e.property === 'IDUSERULTIMAALTERACAO'),
-    ).toBe(true);
+    expect(errors.some((e) => e.property === 'IDUSERULTIMAALTERACAO')).toBe(
+      true,
+    );
   });
 
   it('rejects a non-positive IDUSERULTIMAALTERACAO', async () => {
@@ -57,9 +57,9 @@ describe('UpdateMaloteDto', () => {
 
     const errors = await validate(dto);
 
-    expect(
-      errors.some((e) => e.property === 'IDUSERULTIMAALTERACAO'),
-    ).toBe(true);
+    expect(errors.some((e) => e.property === 'IDUSERULTIMAALTERACAO')).toBe(
+      true,
+    );
   });
 
   it('rejects a PENDENCIAS entry missing IDPENDENCIA', async () => {

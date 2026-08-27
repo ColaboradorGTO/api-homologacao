@@ -8,14 +8,8 @@ import { MalotesController } from './malotes.controller';
 import { MalotesService } from './malotes.service';
 
 @Module({
-    imports: [
-        HttpModule
-    ],
-    controllers: [
-        MalotesController
-    ],
-    providers: [
-        MalotesService
-    ],
+  imports: [HttpModule],
+  controllers: [MalotesController],
+  providers: [MalotesService],
 })
-export class MalotesModule { }
+export class MalotesModule {}

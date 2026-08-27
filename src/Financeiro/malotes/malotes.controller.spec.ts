@@ -60,7 +60,7 @@ describe('MalotesController', () => {
   });
 
   it('delegates createMalotePorLoja to the service with the body', async () => {
-    const body = { IDEMPRESA: 1, DATAMOVIMENTOCAIXA: '2026-01-01' } as any;
+    const body = { IDEMPRESA: 1, DATAMOVIMENTOCAIXA: '2026-01-01' };
     service.createMalotePorLoja.mockResolvedValue({ success: true });
 
     const result = await controller.createMalotePorLoja(body);
@@ -70,7 +70,7 @@ describe('MalotesController', () => {
   });
 
   it('delegates updateMalote to the service with the body, ignoring the route param', async () => {
-    const body = { IDMALOTE: 1, IDUSERULTIMAALTERACAO: 10 } as any;
+    const body = { IDMALOTE: 1, IDUSERULTIMAALTERACAO: 10 };
     service.updateMalote.mockResolvedValue({ success: true });
 
     const result = await controller.updateMalote('1', body);

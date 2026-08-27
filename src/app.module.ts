@@ -11,9 +11,9 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     AdministrativoModule,
-    FinanceiroModule
+    FinanceiroModule,
   ],
   controllers: [AppController],
-  providers: [ AppService],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

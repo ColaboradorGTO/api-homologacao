@@ -6,10 +6,8 @@ import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AdministrativoController {
-    constructor() {}
+  constructor() {}
 
-    @Get()
-    getListasHistoricosMalotes() {
-        
-    }
+  @Get()
+  getListasHistoricosMalotes() {}
 }

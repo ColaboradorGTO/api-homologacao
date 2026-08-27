@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
 import { of, throwError } from 'rxjs';
@@ -8,6 +9,7 @@ import { MalotesService } from './malotes.service';
 describe('MalotesService', () => {
   let service: MalotesService;
   let httpService: { get: jest.Mock; post: jest.Mock; put: jest.Mock };
+  let loggerErrorSpy: jest.SpyInstance;
 
   const axiosResponseOf = <T>(data: T): AxiosResponse<T> => ({
     data,
@@ -24,12 +26,18 @@ describe('MalotesService', () => {
       put: jest.fn(),
     };
 
-    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
+    loggerErrorSpy = jest
+      .spyOn(Logger.prototype, 'error')
+      .mockImplementation(() => undefined);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MalotesService,
         { provide: HttpService, useValue: httpService },
+        {
+          provide: ConfigService,
+          useValue: { get: () => 'http://test.local' },
+        },
       ],
     }).compile();
 
@@ -78,7 +86,7 @@ describe('MalotesService', () => {
       await expect(service.getListasHistoricosMalotes({})).rejects.toThrow(
         'network error',
       );
-      expect(Logger.prototype.error).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Erro no MalotesService.getListasHistoricosMalotes',
         error,
       );
@@ -100,11 +108,19 @@ describe('MalotesService', () => {
       expect(httpService.get).toHaveBeenCalledWith(
         expect.stringContaining('/api/financeiro/malotes-por-loja.xsjs'),
         {
-          params: expect.objectContaining({
+          params: {
             idGrupoEmpresarial: '9',
             idPendenciaMalote: '3',
             idEmpresa: '1',
-          }),
+            statusMalote: '',
+            idMalote: '',
+            dataPesquisaInicio: '',
+            dataPesquisaFim: '',
+            dataConferenciaInicio: '',
+            dataConferenciaFim: '',
+            page: '',
+            pageSize: '',
+          },
         },
       );
     });
@@ -114,7 +130,7 @@ describe('MalotesService', () => {
       httpService.get.mockReturnValue(throwError(() => error));
 
       await expect(service.getListasMalotesLojas({})).rejects.toThrow('boom');
-      expect(Logger.prototype.error).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Erro no MalotesService.getListasMalotesLojas',
         error,
       );
@@ -135,10 +151,14 @@ describe('MalotesService', () => {
       expect(httpService.get).toHaveBeenCalledWith(
         expect.stringContaining('/api/financeiro/pendencias-malotes.xsjs'),
         {
-          params: expect.objectContaining({
+          params: {
             idEmpresa: '1',
+            idMalote: '',
             statusMalote: 'ABERTO',
-          }),
+            pendenciaMalote: '',
+            page: '',
+            pageSize: '',
+          },
         },
       );
     });
@@ -150,7 +170,7 @@ describe('MalotesService', () => {
       await expect(service.getListaPendenciasMalotes({})).rejects.toThrow(
         'boom',
       );
-      expect(Logger.prototype.error).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Erro no MalotesService.getListaPendenciasMalotes',
         error,
       );
@@ -167,7 +187,7 @@ describe('MalotesService', () => {
         DATAMOVIMENTOCAIXA: '2026-01-01',
       };
 
-      const result = await service.createMalotePorLoja(dto as any);
+      const result = await service.createMalotePorLoja(dto);
 
       expect(result).toEqual(responseData);
       expect(httpService.post).toHaveBeenCalledWith(
@@ -184,9 +204,9 @@ describe('MalotesService', () => {
         service.createMalotePorLoja({
           IDEMPRESA: 1,
           DATAMOVIMENTOCAIXA: '2026-01-01',
-        } as any),
+        }),
       ).rejects.toThrow('boom');
-      expect(Logger.prototype.error).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Erro no MalotesService.createMalotePorLoja',
         error,
       );
@@ -203,7 +223,7 @@ describe('MalotesService', () => {
         IDUSERULTIMAALTERACAO: 10,
       };
 
-      const result = await service.updateMalote(dto as any);
+      const result = await service.updateMalote(dto);
 
       expect(result).toEqual(responseData);
       expect(httpService.put).toHaveBeenCalledWith(
@@ -220,9 +240,9 @@ describe('MalotesService', () => {
         service.updateMalote({
           IDMALOTE: 1,
           IDUSERULTIMAALTERACAO: 10,
-        } as any),
+        }),
       ).rejects.toThrow('boom');
-      expect(Logger.prototype.error).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Erro no MalotesService.updateMalote',
         error,
       );

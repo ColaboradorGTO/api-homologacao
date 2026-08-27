@@ -12,30 +12,30 @@ import { MalotesService } from './malotes.service';
 
 @Controller('financeiro/malotes')
 export class MalotesController {
-    constructor(private readonly malotesService: MalotesService) { }
+  constructor(private readonly malotesService: MalotesService) {}
 
-    @Get('historicos')
-    getListasHistoricosMalotes(@Query() query: GetListasHistoricosMalotesDto) {
-        return this.malotesService.getListasHistoricosMalotes(query);
-    }
+  @Get('historicos')
+  getListasHistoricosMalotes(@Query() query: GetListasHistoricosMalotesDto) {
+    return this.malotesService.getListasHistoricosMalotes(query);
+  }
 
-    @Get('pendencias')
-    getListaPendenciasMalotes(@Query() query: GetPendenciasMalotesDto) {
-        return this.malotesService.getListaPendenciasMalotes(query);
-    }
+  @Get('pendencias')
+  getListaPendenciasMalotes(@Query() query: GetPendenciasMalotesDto) {
+    return this.malotesService.getListaPendenciasMalotes(query);
+  }
 
-    @Get()
-    getListasMalotesLojas(@Query() query: GetMalotesLojaDto) {
-        return this.malotesService.getListasMalotesLojas(query);
-    }
+  @Get()
+  getListasMalotesLojas(@Query() query: GetMalotesLojaDto) {
+    return this.malotesService.getListasMalotesLojas(query);
+  }
 
-    @Post()
-    createMalotePorLoja(@Body() body: CreateMalotesDto) {
-        return this.malotesService.createMalotePorLoja(body);
-    }
+  @Post()
+  createMalotePorLoja(@Body() body: CreateMalotesDto) {
+    return this.malotesService.createMalotePorLoja(body);
+  }
 
-    @Put(':id')
-    updateMalote(@Param('id') id: string, @Body() body: UpdateMaloteDto) {
-        return this.malotesService.updateMalote(body);
-    }
+  @Put(':id')
+  updateMalote(@Param('id') id: string, @Body() body: UpdateMaloteDto) {
+    return this.malotesService.updateMalote(body);
+  }
 }

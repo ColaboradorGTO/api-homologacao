@@ -1,17 +1,9 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class GetListasHistoricosMalotesDto {
+export class GetListaCaixasMovimentoDto {
   @IsOptional()
   @IsString()
-  idEmpresa?: string;
-
-  @IsOptional()
-  @IsString()
-  idMalote?: string;
-
-  @IsOptional()
-  @IsString()
-  idHistoricoMalote?: string;
+  idMarca?: string;
 
   @IsOptional()
   @IsString()
@@ -23,11 +15,11 @@ export class GetListasHistoricosMalotesDto {
 
   @IsOptional()
   @IsString()
-  dataConferenciaInicio?: string;
+  idLoja?: string;
 
   @IsOptional()
   @IsString()
-  dataConferenciaFim?: string;
+  idLojaPesquisa?: string;
 
   @IsOptional()
   @IsString()

@@ -11,201 +11,185 @@ import { UpdateMaloteDto } from './dto/update-malote-dto';
 
 @Injectable()
 export class MalotesService {
-    private readonly logger = new Logger(MalotesService.name);
+  private readonly logger = new Logger(MalotesService.name);
 
-    constructor(
-        private readonly httpService: HttpService,
-        private readonly configService: ConfigService,
-    ) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {}
 
-    private get baseUrl(): string {
-        const url = this.configService.get<string>('API_URL');
+  private get baseUrl(): string {
+    const url = this.configService.get<string>('API_URL');
 
-        if (!url) {
-            throw new Error('API_URL não foi configurada.');
-        }
-
-        return url;
-    }
-    
-
-    async getListasHistoricosMalotes(
-        query: GetListasHistoricosMalotesDto,
-    ) {
-        const {
-            idEmpresa = '',
-            idMalote = '',
-            idHistoricoMalote = '',
-            dataPesquisaInicio = '',
-            dataPesquisaFim = '',
-            dataConferenciaInicio = '',
-            dataConferenciaFim = '',
-            page = '',
-            pageSize = '',
-        } = query;
-
-        try {
-            const response = await firstValueFrom(
-                this.httpService.get(
-                    `${this.baseUrl}/api/financeiro/historicos-malotes.xsjs`,
-                    {
-                        params: {
-                            idEmpresa,
-                            idMalote,
-                            idHistoricoMalote,
-                            dataPesquisaInicio,
-                            dataPesquisaFim,
-                            dataConferenciaInicio,
-                            dataConferenciaFim,
-                            page,
-                            pageSize,
-                        },
-                    },
-                ),
-            );
-
-            return response.data;
-        } catch (error) {
-            this.logger.error(
-                'Erro no MalotesService.getListasHistoricosMalotes',
-                error,
-            );
-
-            throw error;
-        }
+    if (!url) {
+      throw new Error('API_URL não foi configurada.');
     }
 
-    async getListasMalotesLojas(
-        query: GetMalotesLojaDto,
-    ) {
-        const {
-            idEmpresa = '',
-            idMarca = '',
-            idMalote = '',
-            statusMalote = '',
-            pendenciaMalote = '',
-            dataPesquisaInicio = '',
-            dataPesquisaFim = '',
-            dataConferenciaInicio = '',
-            dataConferenciaFim = '',
-            page = '',
-            pageSize = '',
-        } = query;
+    return url;
+  }
 
-        try {
-            const response = await firstValueFrom(
-                this.httpService.get(
-                    `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
-                    {
-                        params: {
-                            idGrupoEmpresarial: idMarca,
-                            idEmpresa,
-                            statusMalote,
-                            idMalote,
-                            idPendenciaMalote: pendenciaMalote,
-                            dataPesquisaInicio,
-                            dataPesquisaFim,
-                            dataConferenciaInicio,
-                            dataConferenciaFim,
-                            page,
-                            pageSize,
-                        },
-                    },
-                ),
-            );
+  async getListasHistoricosMalotes(
+    query: GetListasHistoricosMalotesDto,
+  ): Promise<unknown> {
+    const {
+      idEmpresa = '',
+      idMalote = '',
+      idHistoricoMalote = '',
+      dataPesquisaInicio = '',
+      dataPesquisaFim = '',
+      dataConferenciaInicio = '',
+      dataConferenciaFim = '',
+      page = '',
+      pageSize = '',
+    } = query;
 
-            return response.data;
-        } catch (error) {
-            this.logger.error(
-                'Erro no MalotesService.getListasMalotesLojas',
-                error,
-            );
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<unknown>(
+          `${this.baseUrl}/api/financeiro/historicos-malotes.xsjs`,
+          {
+            params: {
+              idEmpresa,
+              idMalote,
+              idHistoricoMalote,
+              dataPesquisaInicio,
+              dataPesquisaFim,
+              dataConferenciaInicio,
+              dataConferenciaFim,
+              page,
+              pageSize,
+            },
+          },
+        ),
+      );
 
-            throw error;
-        }
+      return response.data;
+    } catch (error) {
+      this.logger.error(
+        'Erro no MalotesService.getListasHistoricosMalotes',
+        error,
+      );
+
+      throw error;
     }
+  }
 
-    async getListaPendenciasMalotes(
-        query: GetPendenciasMalotesDto,
-    ) {
-        const {
-            idEmpresa = '',
-            idMalote = '',
-            statusMalote = '',
-            pendenciaMalote = '',
-            page = '',
-            pageSize = '',
-        } = query;
+  async getListasMalotesLojas(query: GetMalotesLojaDto): Promise<unknown> {
+    const {
+      idEmpresa = '',
+      idMarca = '',
+      idMalote = '',
+      statusMalote = '',
+      pendenciaMalote = '',
+      dataPesquisaInicio = '',
+      dataPesquisaFim = '',
+      dataConferenciaInicio = '',
+      dataConferenciaFim = '',
+      page = '',
+      pageSize = '',
+    } = query;
 
-        try {
-            const response = await firstValueFrom(
-                this.httpService.get(
-                    `${this.baseUrl}/api/financeiro/pendencias-malotes.xsjs`,
-                    {
-                        params: {
-                            idEmpresa,
-                            idMalote,
-                            statusMalote,
-                            pendenciaMalote,
-                            page,
-                            pageSize,
-                        },
-                    },
-                ),
-            );
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<unknown>(
+          `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
+          {
+            params: {
+              idGrupoEmpresarial: idMarca,
+              idEmpresa,
+              statusMalote,
+              idMalote,
+              idPendenciaMalote: pendenciaMalote,
+              dataPesquisaInicio,
+              dataPesquisaFim,
+              dataConferenciaInicio,
+              dataConferenciaFim,
+              page,
+              pageSize,
+            },
+          },
+        ),
+      );
 
-            return response.data;
-        } catch (error) {
-            this.logger.error(
-                'Erro no MalotesService.getListaPendenciasMalotes',
-                error,
-            );
+      return response.data;
+    } catch (error) {
+      this.logger.error('Erro no MalotesService.getListasMalotesLojas', error);
 
-            throw error;
-        }
+      throw error;
     }
+  }
 
-    async createMalotePorLoja(
-        dto: CreateMalotesDto,
-    ) {
-        try {
-            const response = await firstValueFrom(
-                this.httpService.post(
-                    `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
-                    [dto],
-                ),
-            );
+  async getListaPendenciasMalotes(
+    query: GetPendenciasMalotesDto,
+  ): Promise<unknown> {
+    const {
+      idEmpresa = '',
+      idMalote = '',
+      statusMalote = '',
+      pendenciaMalote = '',
+      page = '',
+      pageSize = '',
+    } = query;
 
-            return response.data;
-        } catch (error) {
-            this.logger.error(
-                'Erro no MalotesService.createMalotePorLoja',
-                error,
-            );
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<unknown>(
+          `${this.baseUrl}/api/financeiro/pendencias-malotes.xsjs`,
+          {
+            params: {
+              idEmpresa,
+              idMalote,
+              statusMalote,
+              pendenciaMalote,
+              page,
+              pageSize,
+            },
+          },
+        ),
+      );
 
-            throw error;
-        }
+      return response.data;
+    } catch (error) {
+      this.logger.error(
+        'Erro no MalotesService.getListaPendenciasMalotes',
+        error,
+      );
+
+      throw error;
     }
+  }
 
-    async updateMalote(
-        dto: UpdateMaloteDto,
-    ) {
-        try {
-            const response = await firstValueFrom(
-                this.httpService.put(
-                    `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
-                    [dto],
-                ),
-            );
+  async createMalotePorLoja(dto: CreateMalotesDto): Promise<unknown> {
+    try {
+      const response = await firstValueFrom(
+        this.httpService.post<unknown>(
+          `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
+          [dto],
+        ),
+      );
 
-            return response.data;
-        } catch (error) {
-            this.logger.error(
-                'Erro no MalotesService.updateMalote',
-                error,
-            );
+      return response.data;
+    } catch (error) {
+      this.logger.error('Erro no MalotesService.createMalotePorLoja', error);
 
-            throw error;
-        }
+      throw error;
     }
+  }
+
+  async updateMalote(dto: UpdateMaloteDto): Promise<unknown> {
+    try {
+      const response = await firstValueFrom(
+        this.httpService.put<unknown>(
+          `${this.baseUrl}/api/financeiro/malotes-por-loja.xsjs`,
+          [dto],
+        ),
+      );
+
+      return response.data;
+    } catch (error) {
+      this.logger.error('Erro no MalotesService.updateMalote', error);
+
+      throw error;
+    }
+  }
 }
